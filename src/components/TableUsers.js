@@ -6,6 +6,7 @@ import ReactPaginate from 'react-paginate';
 import ModalAddNew from './ModalAddNew';
 import ModalEditUser from './ModalEditUser';
 import ModalConfirm from './ModalConfirm';
+import './TableUsers.scss'
 import _ from 'lodash'
 
 
@@ -22,6 +23,9 @@ const TableUsers = (props) => {
 
     const [isShowModalDeleteUser, setIsShowModalDeleteUser] = useState(false)
     const [dataDeleteUser, setDataDeleteUser] = useState({})
+
+    const [sortBy, setSortBy] = useState("asc")
+    const [sortField, setSortField] = useState("id")
 
     const handleClose = () => {
         setIsShowModalAddNewUser(false)
@@ -72,7 +76,14 @@ const TableUsers = (props) => {
         cloneListUser = cloneListUser.filter(item => item.id !== user.id)
         setListUser(cloneListUser)
     }
-
+    const handleSort = (sortBy, sortField) => {
+        setSortBy(sortBy);
+        setSortField(sortField)
+        let cloneListUser = _.cloneDeep(listUser)
+        cloneListUser = _.orderBy(cloneListUser, [sortField], [sortBy])
+        setListUser(cloneListUser)
+    }
+    console.log(sortBy, sortField);
 
     return (<>
         <div className="my-3 d-flex d-flex justify-content-between align-items-center">
@@ -82,9 +93,29 @@ const TableUsers = (props) => {
         <Table striped bordered hover variant="light">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th className='d-flex  justify-content-between align-items-center'>ID
+                        <div className="sort">
+                            <i className='fa-solid fa-arrow-down-long'
+                                onClick={() => handleSort("desc", "id")
+                                }
+                            ></i>
+                            <i className='fa-solid fa-arrow-up-long'
+                                onClick={() => handleSort("asc", "id")}
+                            ></i>
+                        </div>
+                    </th>
                     <th>Email</th>
-                    <th>First Name</th>
+                    <th className='d-flex  justify-content-between align-items-center'>First Name
+                        <div className="sort">
+                            <i className='fa-solid fa-arrow-down-long'
+                                onClick={() => handleSort("desc", "first_name")
+                                }
+                            ></i>
+                            <i className='fa-solid fa-arrow-up-long'
+                                onClick={() => handleSort("asc", "first_name")}
+                            ></i>
+                        </div>
+                    </th>
                     <th>Last Name</th>
                     <th>Actions</th>
                 </tr>
