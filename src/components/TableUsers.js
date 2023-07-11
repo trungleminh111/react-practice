@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from 'react';
+import { CSVLink, CSVDownload } from "react-csv";
 import Table from 'react-bootstrap/Table';
 import { fetchAllUser } from '../services/UserService';
 import ReactPaginate from 'react-paginate';
@@ -26,6 +27,8 @@ const TableUsers = (props) => {
 
     const [sortBy, setSortBy] = useState("asc")
     const [sortField, setSortField] = useState("id")
+
+    const [dataExport, setDataExport] = useState([])
 
 
 
@@ -101,13 +104,51 @@ const TableUsers = (props) => {
         }
     }, 500)
 
+    const getUserExport = (event, done) => {
+        let result = []
+        if (listUser && listUser.length > 0) {
+            result.push(["Id", "Email", "First Name", "Last Name", "Avatar "])
+            listUser.map((item, index) => {
+                let arr = []
+                arr[0] = item.id
+                arr[1] = item.email
+                arr[2] = item.first_name
+                arr[3] = item.last_name
+                arr[4] = item.avatar
+                result.push(arr)
+            })
+            setDataExport(result)
+            done()
+        }
+    }
+    console.log(dataExport);
     return (<>
         <div className="my-3 d-flex d-flex justify-content-between align-items-center">
             <span>  List user:</span>
-            <button
-                onClick={handleShow}
-                className='btn btn-primary'
-            >Add new user</button>
+            <div>
+                <label htmlFor="import" className='btn btn-outline-primary'>
+                    <i className="fa-solid fa-upload"></i>
+                    Import
+                </label>
+                <input type="file" id='import' hidden />
+
+                <CSVLink data={dataExport}
+                    filename={"my-file.csv"}
+                    target="_blank"
+                    asyncOnClick={true}
+                    onClick={getUserExport}
+                >
+                    <button className='btn btn-outline-secondary mx-1'>
+                        <i className="fa-solid fa-download"></i> Export
+                    </button>
+                </CSVLink>
+                <button
+                    onClick={handleShow}
+                    className='btn btn-outline-success'
+                >
+                    <i className='fa-solid fa-circle-plus mx-1'></i>
+                    Add new </button>
+            </div>
         </div>
         <div className='col-4 mb-3'>
             <input type="text"
