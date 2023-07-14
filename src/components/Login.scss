@@ -1,0 +1,72 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+
+    .title {
+        text-align: center;
+        font-size: 23px;
+        font-weight: 600;
+        padding: 30px;
+    }
+
+    input {
+        padding: 8px 5px;
+        outline: none;
+        margin-bottom: 7px;
+        background-color: #f5f5f5;
+        border: 1px solid #dedede;
+        width: 100%;
+
+        &:hover {
+            background-color: #dedede;
+            transition: 0.3s;
+
+        }
+    }
+
+    .input-showpassword {
+        position: relative;
+
+
+        i {
+            position: absolute;
+            right: 7px;
+            top: 13px;
+            cursor: pointer;
+
+        }
+    }
+
+
+    button {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 3px;
+        border: none;
+
+        &.active {
+            background-color: #fe2c55;
+            color: white;
+            font-weight: 400;
+        }
+    }
+
+    button[disabled=disabled],
+    button:disabled {
+        // your css rules
+        cursor: not-allowed;
+        background-color: rgb(229, 229, 229) !important;
+    }
+
+    .back {
+        text-align: center;
+        cursor: pointer;
+        margin-top: 20px;
+
+        &::before {
+            content: "<";
+            margin-right: 3px;
+        }
+    }
+}
